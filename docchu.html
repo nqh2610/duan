@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR with Tesseract.js</title>
+    <style>
+        #video {
+            width: 100%;
+            max-width: 640px;
+            display: block;
+            margin: 0 auto;
+        }
+        #canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Website Điều Khiển Bằng Giọng Nói</h1>
+    <p id="status">Đang nghe...</p>
+    <div>
+        <button id="tim_do_vat">Tìm đồ vật</button>
+        <button id="nhan_dang_cu_chi">Nhận dạng cử chỉ</button>
+        <button id="docchu">Đọc chữ</button>
+    </div>   
+    <h1>OCR with Tesseract.js</h1>
+    <video id="video" autoplay></video>
+    <button id="capture">Capture</button>
+    <p id="result">Text will appear here</p>
+    <script src="https://unpkg.com/tesseract.js@2.1.0/dist/tesseract.min.js"></script>
+    <script src="js/dochu.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

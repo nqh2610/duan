@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Điều Khiển Bằng Giọng Nói</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #status {
+            font-size: 1.5em;
+            color: green;
+        }
+        #content {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 20px;
+            display: inline-block;
+            width: 80%;
+            max-width: 600px;
+            min-height: 100px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Website Điều Khiển Bằng Giọng Nói</h1>
+    <p id="status">Đang nghe...</p>
+    <div>
+        <button id="tim_do_vat">Tìm đồ vật</button>
+        <button id="nhan_dang_cu_chi">Nhận dạng cử chỉ</button>
+        <button id="docchu">Đọc chữ</button>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
