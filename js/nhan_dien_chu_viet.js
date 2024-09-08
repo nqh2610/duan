@@ -2,11 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('video');
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-   
     const resultElement = document.getElementById('result');
 
+    // Function to check if the device is mobile
+    function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
+
     // Request access to the camera
-    navigator.mediaDevices.getUserMedia({ video: true })
+    const videoConstraints = isMobileDevice() ? 
+        { facingMode: { exact: "environment" } } : 
+        true; // Default camera for desktop/laptop
+
+    navigator.mediaDevices.getUserMedia({ video: videoConstraints })
         .then(stream => {
             video.srcObject = stream;
         })
@@ -15,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // Capture image and perform OCR
-    document.querySelector('main').addEventListener('click', () => {
+    const captureImage = () => {
         // Set canvas size to match video size
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
@@ -45,9 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(err => {
             console.error('Error performing OCR: ', err);
         });
+    };
+
+    // Add event listener for click and touch events
+    document.querySelector('main').addEventListener('click', captureImage);
+    document.querySelector('main').addEventListener('touchstart', (event) => {
+        event.preventDefault(); // Prevents potential default touch behaviors
+        captureImage();
     });
 
-    // Function to detect language (improved implementation)
+    // Function to detect language
     function detectLanguage(text) {
         return new Promise((resolve, reject) => {
             // Simple language detection based on the presence of certain characters or patterns
