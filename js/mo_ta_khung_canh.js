@@ -10,7 +10,19 @@ let isReading = false;
 
 async function setupCamera() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    let constraints = {
+      video: {
+        facingMode: "user" // Mặc định sử dụng camera trước
+      }
+    };
+
+    // Kiểm tra xem thiết bị có phải là điện thoại di động không
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      constraints.video.facingMode = { exact: "environment" }; // Sử dụng camera sau cho thiết bị di động
+    }
+
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
     video.srcObject = stream;
     return new Promise((resolve) => {
       video.onloadedmetadata = () => {
@@ -18,9 +30,10 @@ async function setupCamera() {
       };
     });
   } catch (error) {
-    console.error('Error accessing the camera:', error);
+    console.error('Lỗi khi truy cập camera:', error);
   }
 }
+
 
 async function detectObject() {
   let model;

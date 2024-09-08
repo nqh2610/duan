@@ -1,6 +1,7 @@
 const URL = "https://teachablemachine.withgoogle.com/models/s5TLjVsw2/";
 
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
+let lastSpokenTime = 0; // Track the time of the last spoken alert
 
 // Automatically call init when the page loads
 window.onload = init;
@@ -9,7 +10,7 @@ async function init() {
   const modelURL = URL + "model.json";
   const metadataURL = URL + "metadata.json";
 
-  // load the model and metadata
+  // Load the model and metadata
   model = await tmImage.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
 
@@ -45,18 +46,6 @@ async function init() {
     await predict();
     window.requestAnimationFrame(loop);
   }
-
-  // Add click event to read the prediction if it's above 80%
-  document.querySelector('main').addEventListener('click', () => {
-    if (highestPrediction && highestProbability >= 0.8) {
-        const speech = new SpeechSynthesisUtterance(highestPrediction);  
-        window.speechSynthesis.speak(speech);
-    }
-    else {      
-        const speech = new SpeechSynthesisUtterance("Chưa chắc chắn số tiền bao nhiêu");        
-        window.speechSynthesis.speak(speech);
-    }
-  });
 }
 
 async function predict() {
@@ -79,9 +68,15 @@ async function predict() {
   // Show the highest prediction only if it meets the condition
   if (highestProbability >= 0.8) {
     document.getElementById("label-container").innerHTML = 
-      "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";      
-  } else {
-    document.getElementById("label-container").innerHTML = 
-      "Chưa nhận diện số tiền";
-  }
+      "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";
+
+    // Check if the 5-second delay has passed since the last spoken alert
+    const currentTime = new Date().getTime();
+    if (currentTime - lastSpokenTime > 9000) {
+      // Dynamically announce object detection only if enough time has passed
+      const detectedSpeech = new SpeechSynthesisUtterance("Cẩn thận, phát hiện có " + highestPrediction);
+      window.speechSynthesis.speak(detectedSpeech);
+      lastSpokenTime = currentTime; // Update the last spoken time
+    }
+  } 
 }

@@ -26,9 +26,10 @@ if ("webkitSpeechRecognition" in window) {
 
   // Hàm xử lý lệnh giọng nói
   function handleCommand(command) {
-    if (command.includes("mở tìm đồ vật")) {
-      tim_do_vat();
-    } else if (command.includes("nhận dạng cử chỉ tay")) {
+    if (command.includes("mở trang chủ")) {
+      trangchu();
+    }    
+    else if (command.includes("nhận dạng cử chỉ tay")) {
       nhan_dang_cu_chi();
     } else if (command.includes("mở mô tả khung cảnh")) {
       motakhungcanh();
@@ -36,7 +37,10 @@ if ("webkitSpeechRecognition" in window) {
       nhandientien();
     } else if (command.includes("mở giọng nói thành chữ viết")) {
       giongnoithanhchuviet();
-    } else if (command.includes("mở nhận diện chữ viết")) {
+    }else if (command.includes("mở cảnh báo nguy hiểm")) {
+      canhbaonguyhiem();
+    }    
+    else if (command.includes("mở nhận diện chữ viết")) {
       docchu();
     } else {
       status.textContent = "Không nhận diện được lệnh.";
@@ -54,9 +58,9 @@ if ("webkitSpeechRecognition" in window) {
 }
 
 // Hàm sử dụng cho các trang khác
-function tim_do_vat() {
-  window.location.href = "tim_kiem.html";
-  speakText("Đã mở tìm đồ vật");
+function trangchu() {
+  window.location.href = "index.html";
+  speakText("Đã mở trang chủ");
 }
 
 function nhan_dang_cu_chi() {
@@ -82,6 +86,11 @@ function giongnoithanhchuviet() {
   window.location.href = "giong_noi_thanh_chu_viet.html";
   speakText("Đã mở giọng nói thành chữ viết");
 }
+
+function canhbaonguyhiem(){
+  window.location.href = "canh_bao_nguy_hiem.html";
+  speakText("Đã mở cảnh báo nguy hiểm");
+}
 // Thêm sự kiện cho các nút
 document.getElementById("tim_do_vat").addEventListener("click", () => {
   tim_do_vat();
@@ -104,3 +113,10 @@ document
   .addEventListener("click", () => {
     giongnoithanhchuviet();
   });
+  
+document.getElementById("canh_bao_nguy_hiem").addEventListener("click", () => {
+    canhbaonguyhiem();
+});
+document.getElementById("trang_chu").addEventListener("click", () => {
+  trangchu();
+});
