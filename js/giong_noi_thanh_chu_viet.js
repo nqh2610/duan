@@ -46,11 +46,14 @@ if ("webkitSpeechRecognition" in window) {
             recognition.stop(); // Dừng nhận diện giọng nói
         }
     }
-
+    const mainElement = document.querySelector("main");
     // Thêm sự kiện click vào trang web
-    document.querySelector("main").addEventListener("click", () => {
+    mainElement.addEventListener("click", () => {
         startRecognition();
     });
+
+    // Thêm sự kiện touchstart cho thiết bị cảm ứng
+    mainElement.addEventListener("touchstart", startRecognition);
 
     // Sự kiện khi nhận dạng hoàn thành
     recognition.onresult = (event) => {
@@ -92,7 +95,21 @@ if ("webkitSpeechRecognition" in window) {
     }
 
     // Thêm sự kiện click đúp để đọc văn bản và dừng ghi âm
-    document.querySelector("main").addEventListener("dblclick", () => {
+    mainElement.addEventListener("dblclick", () => {
+        stopRecognition(); // Dừng việc nhận diện giọng nói
+        const text = document.getElementById("result").textContent;
+        readText(text); // Đọc văn bản
+    });
+
+    mainElement.addEventListener("dblclick", () => {
+        stopRecognition(); // Dừng việc nhận diện giọng nói
+        const text = document.getElementById("result").textContent;
+        readText(text); // Đọc văn bản
+    });
+
+    const hammer = new Hammer(mainElement);
+    hammer.get('doubletap').set({ enable: true, taps: 2 });
+    hammer.on('doubletap', () => {
         stopRecognition(); // Dừng việc nhận diện giọng nói
         const text = document.getElementById("result").textContent;
         readText(text); // Đọc văn bản

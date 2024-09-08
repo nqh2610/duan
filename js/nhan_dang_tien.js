@@ -46,17 +46,26 @@ async function init() {
     window.requestAnimationFrame(loop);
   }
 
-  // Add click event to read the prediction if it's above 80%
-  document.querySelector('main').addEventListener('click', () => {
+  // Kiểm tra thiết bị có hỗ trợ cảm ứng hay không
+  const isTouchDevice = 'ontouchstart' in document.documentElement;
+
+  // Hàm đọc kết quả dự đoán
+  const handlePrediction = () => {
     if (highestPrediction && highestProbability >= 0.8) {
-        const speech = new SpeechSynthesisUtterance(highestPrediction);  
-        window.speechSynthesis.speak(speech);
+      const speech = new SpeechSynthesisUtterance(highestPrediction);  
+      window.speechSynthesis.speak(speech);
+    } else {      
+      const speech = new SpeechSynthesisUtterance("Chưa chắc chắn số tiền bao nhiêu");        
+      window.speechSynthesis.speak(speech);
     }
-    else {      
-        const speech = new SpeechSynthesisUtterance("Chưa chắc chắn số tiền bao nhiêu");        
-        window.speechSynthesis.speak(speech);
-    }
-  });
+  };
+
+  // Xử lý sự kiện cho cả thiết bị cảm ứng và máy tính
+  const mainElement = document.querySelector('main');
+  if (isTouchDevice) {
+    mainElement.addEventListener('touchstart', handlePrediction);
+  }
+  mainElement.addEventListener('click', handlePrediction);
 }
 
 async function predict() {
