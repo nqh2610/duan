@@ -11,8 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Request access to the camera
     const videoConstraints = isMobileDevice() ? 
-        { facingMode: { exact: "environment" } } : 
-        true; // Default camera for desktop/laptop
+        { facingMode: { exact: "environment" } } : "user"; 
 
     navigator.mediaDevices.getUserMedia({ video: videoConstraints })
         .then(stream => {
