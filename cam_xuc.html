@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+</head>
+<body>
+    <div>Teachable Machine Image Model with Emotion Display</div>
+    <div id="webcam-container"></div>
+    <canvas id="overlay" style="position: absolute; top: 0; left: 0;"></canvas>
+    <script type="text/javascript">
+        const URL = "https://teachablemachine.withgoogle.com/models/3PBdHhK_s/";
+
+        let model, webcam, labelContainer, maxPredictions, canvas, context;
+
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            // Load the model and metadata
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            // Set up the webcam
+            const flip = true;
+            webcam = new tmImage.Webcam(400, 400, flip);
+            await webcam.setup();
+            await webcam.play();
+
+            // Append webcam to the DOM
+            document.getElementById("webcam-container").appendChild(webcam.canvas);
+
+            // Set up overlay canvas for drawing emotions
+            canvas = document.getElementById("overlay");
+            canvas.width = webcam.canvas.width;
+            canvas.height = webcam.canvas.height;
+            context = canvas.getContext("2d");
+
+            window.requestAnimationFrame(loop);
+        }
+
+        async function loop() {
+            webcam.update();
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        async function predict() {
+            const prediction = await model.predict(webcam.canvas);
+
+            // Find the prediction with the highest probability
+            let highestPrediction = prediction[0];
+            for (let i = 1; i < maxPredictions; i++) {
+                if (prediction[i].probability > highestPrediction.probability) {
+                    highestPrediction = prediction[i];
+                }
+            }
+
+            // Clear the canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the highest emotion text on the webcam
+            context.font = "30px Arial";
+            context.fillStyle = '#FF0000';
+            context.fillText(highestPrediction.className + ": " + highestPrediction.probability.toFixed(2), 10, 50);
+        }
+
+        // Auto-start on page load
+        window.addEventListener("DOMContentLoaded", init);
+    </script>
+</body>
+</html>
