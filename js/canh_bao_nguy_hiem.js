@@ -60,31 +60,45 @@ async function predict() {
   const canvas = document.getElementById("canvas");
   const prediction = await model.predict(canvas);
 
-  // Find the highest prediction with probability > 80%
-  let maxProbability = 0;
-  highestPrediction = "";
-  highestProbability = 0;
+  // Array to hold detected objects with probability >= 80%
+  let detectedObjects = [];
 
   for (let i = 0; i < maxPredictions; i++) {
-    if (prediction[i].probability > maxProbability) {
-      maxProbability = prediction[i].probability;
-      highestPrediction = prediction[i].className;
-      highestProbability = prediction[i].probability;
+    if (prediction[i].probability >= 0.8) {
+      detectedObjects.push({
+        name: prediction[i].className,
+        probability: prediction[i].probability,
+      });
     }
   }
 
-  // Show the highest prediction only if it meets the condition
-  if (highestProbability >= 0.8) {
-    document.getElementById("label-container").innerHTML = 
-      "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";
+  // Display detected objects with probability >= 80%
+  if (detectedObjects.length > 0) {
+    let resultText = "";
+    let detectedSpeechText = "Cẩn thận, phát hiện có ";
 
-    // Check if the 5-second delay has passed since the last spoken alert
+    detectedObjects.forEach((obj, index) => {
+      resultText += obj.name + " (" + (obj.probability * 100).toFixed(2) + "%)<br>";
+
+      // Add each object to the speech text
+      if (index === detectedObjects.length - 1) {
+        detectedSpeechText += obj.name + "."; // Add period after the last object
+      } else {
+        detectedSpeechText += obj.name + ", "; // Add comma between objects
+      }
+    });
+
+    document.getElementById("label-container").innerHTML = resultText;
+
+    // Speech synthesis for all detected objects
     const currentTime = new Date().getTime();
     if (currentTime - lastSpokenTime > 9000) {
-      // Dynamically announce object detection only if enough time has passed
-      const detectedSpeech = new SpeechSynthesisUtterance("Cẩn thận, phát hiện có " + highestPrediction);
+      const detectedSpeech = new SpeechSynthesisUtterance(detectedSpeechText);
       window.speechSynthesis.speak(detectedSpeech);
-      lastSpokenTime = currentTime; // Update the last spoken time
+      lastSpokenTime = currentTime;
     }
+  } else {
+    // Clear label container if no object is detected with high accuracy
+    document.getElementById("label-container").innerHTML = "Không phát hiện có nguy hiểm";
   }
 }

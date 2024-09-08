@@ -193,6 +193,13 @@ async function main() {
   detectObject();
 }
 
-document.querySelector("main").addEventListener("click", readAllObjects);
+const mainElement = document.querySelector("main");
+const isTouchDevice = 'ontouchstart' in document.documentElement;
+// Xử lý cho thiết bị di động
+if (isTouchDevice) {
+    mainElement.addEventListener("touchstart", readAllObjects);
+}
+// Xử lý cho máy tính hoặc thiết bị không có cảm ứng
+mainElement.addEventListener("click", readAllObjects);
 
 main();
