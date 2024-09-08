@@ -23,35 +23,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Capture image and perform OCR
     const captureImage = () => {
-        // Set canvas size to match video size
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+        // Announce the start of text recognition
+        const startRecognitionUtterance = new SpeechSynthesisUtterance('Bắt đầu nhận dạng chữ');
+        startRecognitionUtterance.lang = 'vi'; // Set language to Vietnamese
+        window.speechSynthesis.speak(startRecognitionUtterance);
 
-        // Draw the current video frame onto the canvas
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Delay the image capture slightly to ensure the announcement finishes
+        setTimeout(() => {
+            // Set canvas size to match video size
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
 
-        // Perform OCR using Tesseract.js
-        Tesseract.recognize(
-            canvas,
-            'eng+vie', // Include English and Vietnamese languages
-            {
-                logger: info => console.log(info),
-            }
-        ).then(({ data: { text } }) => {
-            resultElement.textContent = text;
+            // Draw the current video frame onto the canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Automatically detect language
-            detectLanguage(text).then(lang => {
-                // Read text using SpeechSynthesis API with detected language
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang;
-                window.speechSynthesis.speak(utterance);
+            // Perform OCR using Tesseract.js
+            Tesseract.recognize(
+                canvas,
+                'eng+vie', // Include English and Vietnamese languages
+                {
+                    logger: info => console.log(info),
+                }
+            ).then(({ data: { text } }) => {
+                resultElement.textContent = text;
+
+                // Automatically detect language
+                detectLanguage(text).then(lang => {
+                    // Read text using SpeechSynthesis API with detected language
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = lang;
+                    window.speechSynthesis.speak(utterance);
+                }).catch(err => {
+                    console.error('Error detecting language: ', err);
+                });
             }).catch(err => {
-                console.error('Error detecting language: ', err);
+                console.error('Error performing OCR: ', err);
             });
-        }).catch(err => {
-            console.error('Error performing OCR: ', err);
-        });
+        }, 1000); // Adjust the delay as needed
     };
 
     // Add event listener for click and touch events
