@@ -24,10 +24,15 @@ async function init() {
   video.setAttribute("hidden", "true");
   document.body.appendChild(video);
 
-  // Access the webcam
+  // Detect if the user is on a mobile device
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  // Access the appropriate camera: rear for mobile, default for desktop
   navigator.mediaDevices
     .getUserMedia({
-      video: true,
+      video: {
+        facingMode: isMobile ? { exact: "environment" } : "user",
+      },
     })
     .then((stream) => {
       video.srcObject = stream;
@@ -35,6 +40,9 @@ async function init() {
       video.onloadedmetadata = () => {
         window.requestAnimationFrame(loop);
       };
+    })
+    .catch((error) => {
+      console.error("Error accessing camera:", error);
     });
 
   const canvas = document.getElementById("canvas");
@@ -78,5 +86,5 @@ async function predict() {
       window.speechSynthesis.speak(detectedSpeech);
       lastSpokenTime = currentTime; // Update the last spoken time
     }
-  } 
+  }
 }
