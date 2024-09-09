@@ -97,19 +97,6 @@ if ("webkitSpeechRecognition" in window) {
         window.speechSynthesis.speak(utterance);
     }
 
-    // // Thêm sự kiện click đúp để đọc văn bản và dừng ghi âm
-    // mainElement.addEventListener("dblclick", () => {
-    //     stopRecognition(); // Dừng việc nhận diện giọng nói
-    //     const text = document.getElementById("result").textContent;
-    //     readText(text); // Đọc văn bản
-    // });
-
-    // mainElement.addEventListener("dblclick", () => {
-    //     stopRecognition(); // Dừng việc nhận diện giọng nói
-    //     const text = document.getElementById("result").textContent;
-    //     readText(text); // Đọc văn bản
-    // });
-
     const hammer = new Hammer(mainElement);
     //hammer.get('doubletap').set({ enable: true, taps: 2 });
     hammer.on('doubletap', () => {

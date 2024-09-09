@@ -97,10 +97,6 @@ function canhbaonguyhiem(){
   window.location.href = "canh_bao_nguy_hiem.html";
   speakText("Đã mở cảnh báo nguy hiểm");
 }
-// Thêm sự kiện cho các nút
-document.getElementById("tim_do_vat").addEventListener("click", () => {
-  tim_do_vat();
-});
 
 document.getElementById("nhan_dien_chu_viet").addEventListener("click", () => {
   docchu();
