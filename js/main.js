@@ -39,7 +39,10 @@ if ("webkitSpeechRecognition" in window) {
       giongnoithanhchuviet();
     }else if (command.includes("mở cảnh báo nguy hiểm")) {
       canhbaonguyhiem();
-    }    
+    } 
+    else if (command.includes("mở nhận diện màu sắc")) {
+      nhandienmausac();
+    }   
     else if (command.includes("mở nhận diện chữ viết")) {
       docchu();
     } else {
@@ -81,7 +84,10 @@ function nhandientien() {
   window.location.href = "nhan_dien_tien.html";
   speakText("Đã mở nhận diện tiền");
 }
-
+function nhandienmausac() {
+  window.location.href = "nhan_dien_mau_sac.html";
+  speakText("Đã mở nhận diện màu sắc");
+}
 function giongnoithanhchuviet() {
   window.location.href = "giong_noi_thanh_chu_viet.html";
   speakText("Đã mở giọng nói thành chữ viết");
@@ -119,4 +125,7 @@ document.getElementById("canh_bao_nguy_hiem").addEventListener("click", () => {
 });
 document.getElementById("trang_chu").addEventListener("click", () => {
   trangchu();
+});
+document.getElementById("nhan_dien_mau_sac").addEventListener("click", () => {
+  nhandienmausac();
 });

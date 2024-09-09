@@ -40,10 +40,10 @@
                             <a class="nav-link" href="mo_ta_khung_canh.html">Mô tả khung cảnh</a>
                         </li>                       
                         <li id="canh_bao_nguy_hiem" class="nav-item">
-                            <a class="nav-link active" href="canh_bao_nguy_hiem.html">Cảnh báo nguy hiểm</a>
+                            <a class="nav-link" href="canh_bao_nguy_hiem.html">Cảnh báo nguy hiểm</a>
                         </li>                       
                         <li id="nhan_dien_mau_sac" class="nav-item">
-                            <a class="nav-link" href="nhan_dien_mau_sac.html">Nhận diện màu sắc</a>
+                            <a class="nav-link active" href="nhan_dien_mau_sac.html">Nhận diện màu sắc</a>
                         </li>
                         <li id="nhan_dien_tien" class="nav-item">
                             <a  class="nav-link" href="nhan_dien_tien.html">Nhận diện tiền</a>
@@ -65,16 +65,17 @@
         <div class="container mt-2">
             <p id="status">Đang nghe...</p>
             <div id="camera" class="d-flex justify-content-center align-items-center"> 
-                <canvas id="canvas" width="1000" height="460"></canvas>
+                <video id="video" autoplay></video>       
             </div>
-            <div id="label-container"></div>  
+            <div id="colorDisplay">Màu sẽ hiện ở đây</div>
         </div>
 
         <footer class="container mt-4">
             <p>Nếu bạn hỗ trợ người khiếm thị, vui lòng truy cập <a href="#">trang hỗ trợ</a> để biết thêm chi tiết.</p>
         </footer>
     </main>
-    <script src="js/canh_bao_nguy_hiem.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.min.js"></script>
+    <script src="js/nhan_dien_mau_sac.js"></script>
     <script src="js/main.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
