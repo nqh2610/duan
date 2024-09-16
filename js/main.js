@@ -1,9 +1,12 @@
 // Kiểm tra hỗ trợ API giọng nói
 if ("webkitSpeechRecognition" in window) {
   const recognition = new webkitSpeechRecognition();
-  recognition.lang = "vi-VN";
-  recognition.continuous = false;
-  recognition.interimResults = false;
+  function speakText(text) {
+    const speech = new SpeechSynthesisUtterance();
+    speech.lang = "vi-VN";
+    speech.text = text;
+    window.speechSynthesis.speak(speech);
+  }
 
   const status = document.getElementById("status");
   const content = document.getElementById("content");
@@ -50,12 +53,8 @@ if ("webkitSpeechRecognition" in window) {
     }
   }
 
-  function speakText(text) {
-    const speech = new SpeechSynthesisUtterance();
-    speech.lang = "vi-VN";
-    speech.text = text;
-    window.speechSynthesis.speak(speech);
-  }
+
+
 } else {
   alert("Trình duyệt của bạn không hỗ trợ Web Speech API");
 }

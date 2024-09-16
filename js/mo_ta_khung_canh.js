@@ -58,8 +58,7 @@ async function detectObject() {
   
       if (filteredPredictions.length > 0) {
         const classCounts = countClasses(filteredPredictions);
-  
-        // Calculate the scaling ratio between the video and the canvas
+         
         const videoWidth = video.videoWidth;
         const videoHeight = video.videoHeight;
         const canvasWidth = canvas.width;
@@ -69,7 +68,7 @@ async function detectObject() {
         const scaleY = canvasHeight / videoHeight;
   
         filteredPredictions.forEach((prediction) => {
-          // Scale the bounding box coordinates
+       
           const [x, y, width, height] = prediction.bbox;
           const scaledX = x * scaleX;
           const scaledY = y * scaleY;
@@ -84,12 +83,12 @@ async function detectObject() {
           context.font = "20px Arial";
           context.stroke();
   
-          // Display object class and confidence score
+         
           const confidence = (prediction.score * 100).toFixed(2);
           context.fillText(`${prediction.class} (${confidence}%)`, scaledX, scaledY > 10 ? scaledY - 5 : 10);
         });
   
-        objectNameDiv.textContent = `Những đồ vật được phát hiện: ${Object.entries(classCounts)
+        objectNameDiv.textContent = `Khung cảnh có: ${Object.entries(classCounts)
           .map(([className, count]) => `${count} ${className}`)
           .join(", ")}`;
       }
@@ -161,30 +160,9 @@ function calculateIoU(box1, box2) {
   return intersection / union;
 }
 
-function speak(text) {
-  return new Promise((resolve) => {
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = "en-US";
-    speech.onend = resolve; // Resolve the promise when speech ends
-    window.speechSynthesis.speak(speech);
-  });
-}
-
 async function readAllObjects() {
-  if (predictions.length > 0 && !isReading) {
-    const classCounts = countClasses(predictions);
-    readingQueue = Object.entries(classCounts).map(([className, count]) => `${count} ${className}`);
-    isReading = true;
-    await speakNextObject();
-    isReading = false;
-  }
-}
-
-async function speakNextObject() {
-  if (readingQueue.length > 0) {
-    const object = readingQueue.shift();
-    await speak(object);
-    await speakNextObject(); // Continue to read the next object
+  if (predictions.length > 0) {
+    speakText(objectNameDiv.textContent)    
   }
 }
 

@@ -11,14 +11,12 @@ const punctuationMap = {
 function replacePunctuationKeywords(text) {
     // Sắp xếp từ khóa theo chiều dài giảm dần để đảm bảo thay thế chính xác
     const sortedKeywords = Object.keys(punctuationMap).sort((a, b) => b.length - a.length);
-
     for (const keyword of sortedKeywords) {
         const punctuation = punctuationMap[keyword];
         // Sử dụng biểu thức chính quy để thay thế từ khóa trong văn bản
         const regex = new RegExp(`\\b${keyword}\\b`, "gi");
         text = text.replace(regex, punctuation);
     }
-
     return text;
 }
 
@@ -50,11 +48,9 @@ if ("webkitSpeechRecognition" in window) {
     const isTouchDevice = () => {
         return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     };
-    if(isTouchDevice()) {
-        // Add touchstart event listener for touch devices
+    if(isTouchDevice()) {       
         mainElement.addEventListener("touchstart", startRecognition);
-    } else {
-        // Add click event listener for non-touch devices
+    } else {       
         mainElement.addEventListener("click", startRecognition);
     }
 
@@ -97,8 +93,7 @@ if ("webkitSpeechRecognition" in window) {
         window.speechSynthesis.speak(utterance);
     }
 
-    const hammer = new Hammer(mainElement);
-    //hammer.get('doubletap').set({ enable: true, taps: 2 });
+    const hammer = new Hammer(mainElement);   
     hammer.on('doubletap', () => {
         stopRecognition(); // Dừng việc nhận diện giọng nói
         const text = document.getElementById("result").textContent;

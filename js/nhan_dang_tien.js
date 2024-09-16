@@ -52,11 +52,11 @@ async function init() {
   // Hàm đọc kết quả dự đoán
   const handlePrediction = () => {
     if (highestPrediction && highestProbability >= 0.8) {
-      const speech = new SpeechSynthesisUtterance(highestPrediction);  
-      window.speechSynthesis.speak(speech);
+      const text = highestPrediction
+      speakText(text)
     } else {      
-      const speech = new SpeechSynthesisUtterance("Chưa chắc chắn số tiền bao nhiêu");        
-      window.speechSynthesis.speak(speech);
+      const text = "Chưa nhận ra số tiền";        
+      speakText(text)
     }
   };
 
@@ -72,7 +72,6 @@ async function predict() {
   const canvas = document.getElementById("canvas");
   const prediction = await model.predict(canvas);
 
-  // Find the highest prediction with probability > 80%
   let maxProbability = 0;
   highestPrediction = "";
   highestProbability = 0;
@@ -85,7 +84,7 @@ async function predict() {
     }
   }
 
-  // Show the highest prediction only if it meets the condition
+  
   if (highestProbability >= 0.8) {
     document.getElementById("label-container").innerHTML = 
       "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";      

@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         colorDisplay.innerText = `Màu: ${closestColorName} (${colorHex})`;
 
         // Đọc tên màu ra âm thanh
-        speakColor("màu chủ đạo là "+closestColorName);
+        speakText("màu chủ đạo là "+closestColorName);
     }
 
     // Chuyển đổi RGB sang HEX
@@ -205,12 +205,5 @@ document.addEventListener('DOMContentLoaded', () => {
         const bDiff = rgb1[2] - rgb2[2];
 
         return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
-    }
-
-    // Chức năng đọc tên màu bằng Web Speech API
-    function speakColor(colorName) {
-        const utterance = new SpeechSynthesisUtterance(colorName);
-        utterance.lang = 'vi-VN';  // Đặt ngôn ngữ tiếng Việt
-        window.speechSynthesis.speak(utterance);
-    }
+    }    
 });

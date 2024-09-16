@@ -1,20 +1,20 @@
 const URL = "https://teachablemachine.withgoogle.com/models/s5TLjVsw2/";
 
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
-let lastSpokenTime = 0; // Track the time of the last spoken alert
+let lastSpokenTime = 0; // Theo dõi thời gian của cảnh báo được nói lần cuối
 
-// Automatically call init when the page loads
+// Tự động gọi hàm init khi trang được tải
 window.onload = init;
 
 async function init() {
   const modelURL = URL + "model.json";
   const metadataURL = URL + "metadata.json";
 
-  // Load the model and metadata
+  // Tải mô hình và metadata
   model = await tmImage.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
 
-  // Setup webcam
+  // Cài đặt webcam
   const video = document.createElement("video");
   video.setAttribute("playsinline", "true");
   video.setAttribute("autoplay", "true");
@@ -24,10 +24,10 @@ async function init() {
   video.setAttribute("hidden", "true");
   document.body.appendChild(video);
 
-  // Detect if the user is on a mobile device
+  // Phát hiện nếu người dùng đang sử dụng thiết bị di động
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  // Access the appropriate camera: rear for mobile, default for desktop
+  // Truy cập camera phù hợp: camera phía sau cho di động, camera mặc định cho desktop
   navigator.mediaDevices
     .getUserMedia({
       video: {
@@ -42,13 +42,13 @@ async function init() {
       };
     })
     .catch((error) => {
-      console.error("Error accessing camera:", error);
+      console.error("Lỗi khi truy cập camera:", error);
     });
 
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
 
-  // Prediction and webcam drawing loop
+  // Vòng lặp dự đoán và vẽ webcam
   async function loop() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     await predict();
@@ -60,7 +60,7 @@ async function predict() {
   const canvas = document.getElementById("canvas");
   const prediction = await model.predict(canvas);
 
-  // Array to hold detected objects with probability >= 80%
+  // Mảng chứa các đối tượng phát hiện với xác suất >= 80%
   let detectedObjects = [];
 
   for (let i = 0; i < maxPredictions; i++) {
@@ -72,7 +72,7 @@ async function predict() {
     }
   }
 
-  // Display detected objects with probability >= 80%
+  // Hiển thị các đối tượng phát hiện với xác suất >= 80%
   if (detectedObjects.length > 0) {
     let resultText = "";
     let detectedSpeechText = "Cẩn thận, phát hiện có ";
@@ -80,25 +80,24 @@ async function predict() {
     detectedObjects.forEach((obj, index) => {
       resultText += obj.name + " (" + (obj.probability * 100).toFixed(2) + "%)<br>";
 
-      // Add each object to the speech text
+      // Thêm từng đối tượng vào văn bản nói
       if (index === detectedObjects.length - 1) {
-        detectedSpeechText += obj.name + "."; // Add period after the last object
+        detectedSpeechText += obj.name + "."; // Thêm dấu chấm sau đối tượng cuối cùng
       } else {
-        detectedSpeechText += obj.name + ", "; // Add comma between objects
+        detectedSpeechText += obj.name + ", "; // Thêm dấu phẩy giữa các đối tượng
       }
     });
 
     document.getElementById("label-container").innerHTML = resultText;
 
-    // Speech synthesis for all detected objects
+    // Tổng hợp giọng nói cho tất cả các đối tượng phát hiện
     const currentTime = new Date().getTime();
     if (currentTime - lastSpokenTime > 9000) {
-      const detectedSpeech = new SpeechSynthesisUtterance(detectedSpeechText);
-      window.speechSynthesis.speak(detectedSpeech);
+      speakText(detectedSpeechText);     
       lastSpokenTime = currentTime;
     }
   } else {
-    // Clear label container if no object is detected with high accuracy
+    // Xóa nội dung label container nếu không phát hiện đối tượng với độ chính xác cao
     document.getElementById("label-container").innerHTML = "Không phát hiện có nguy hiểm";
   }
 }
