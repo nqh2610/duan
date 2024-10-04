@@ -1,5 +1,5 @@
-const URL = "https://teachablemachine.withgoogle.com/models/_VoeOrhBw/";
-
+// const URL = "https://teachablemachine.withgoogle.com/models/_VoeOrhBw/";
+const URL ="https://teachablemachine.withgoogle.com/models/8Y8THkMDG/"
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
 
 // Automatically call init when the page loads
