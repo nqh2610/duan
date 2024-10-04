@@ -1,4 +1,4 @@
-const URL = "https://teachablemachine.withgoogle.com/models/s5TLjVsw2/";
+const URL = "https://teachablemachine.withgoogle.com/models/AoLk8evV-/";
 
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
 
@@ -51,7 +51,7 @@ async function init() {
 
   // Hàm đọc kết quả dự đoán
   const handlePrediction = () => {
-    if (highestPrediction && highestProbability >= 0.8) {
+    if (highestPrediction && highestProbability >= 0.8 && highestPrediction!=="0") {
       const text = highestPrediction
       speakText(text)
     } else {      
@@ -85,7 +85,7 @@ async function predict() {
   }
 
   
-  if (highestProbability >= 0.8) {
+  if (highestProbability >= 0.8 && highestPrediction!=="0") {
     document.getElementById("label-container").innerHTML = 
       "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";      
   } else {

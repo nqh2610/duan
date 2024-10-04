@@ -1,4 +1,4 @@
-const URL = "https://teachablemachine.withgoogle.com/models/gnz_jdaDy/";
+const URL = "https://teachablemachine.withgoogle.com/models/s5TLjVsw2/";
 
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
 let lastSpokenTime = 0; // Theo dõi thời gian của cảnh báo được nói lần cuối
@@ -75,7 +75,7 @@ async function predict() {
   // Hiển thị các đối tượng phát hiện với xác suất >= 80%
   if (detectedObjects.length > 0) {
     let resultText = "";
-    let detectedSpeechText = "Cẩn thận, phát hiện có ";
+    let detectedSpeechText = "phát hiện có ";
 
     detectedObjects.forEach((obj, index) => {
       resultText += obj.name + " (" + (obj.probability * 100).toFixed(2) + "%)<br>";
