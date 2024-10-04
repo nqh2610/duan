@@ -34,7 +34,6 @@ async function setupCamera() {
   }
 }
 
-
 async function detectObject() {
   let model;
   try {
@@ -68,7 +67,6 @@ async function detectObject() {
         const scaleY = canvasHeight / videoHeight;
   
         filteredPredictions.forEach((prediction) => {
-       
           const [x, y, width, height] = prediction.bbox;
           const scaledX = x * scaleX;
           const scaledY = y * scaleY;
@@ -83,13 +81,12 @@ async function detectObject() {
           context.font = "20px Arial";
           context.stroke();
   
-         
           const confidence = (prediction.score * 100).toFixed(2);
           context.fillText(`${prediction.class} (${confidence}%)`, scaledX, scaledY > 10 ? scaledY - 5 : 10);
         });
   
         objectNameDiv.textContent = `Khung cảnh có: ${Object.entries(classCounts)
-          .map(([className, count]) => `${count} ${className}`)
+          .map(([className, count]) => count > 5 ? `nhiều ${className}` : `${count} ${className}`)
           .join(", ")}`;
       }
   
@@ -99,7 +96,6 @@ async function detectObject() {
     }
   }
   
-
   frameDetection();
 }
 
@@ -162,7 +158,7 @@ function calculateIoU(box1, box2) {
 
 async function readAllObjects() {
   if (predictions.length > 0) {
-    speakText(objectNameDiv.textContent)    
+    speakText(objectNameDiv.textContent);    
   }
 }
 
