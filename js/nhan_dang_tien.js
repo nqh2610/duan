@@ -51,7 +51,7 @@ async function init() {
 
   // Hàm đọc kết quả dự đoán
   const handlePrediction = () => {
-    if (highestPrediction && highestProbability >= 0.8 && highestPrediction!=="0") {
+    if (highestPrediction && highestProbability >= 0.5 && highestPrediction!=="0") {
       const text = highestPrediction
       speakText(text)
     } else {      
@@ -85,7 +85,7 @@ async function predict() {
   }
 
   
-  if (highestProbability >= 0.8 && highestPrediction!=="0") {
+  if (highestProbability >= 0.5 && highestPrediction!=="0") {
     document.getElementById("label-container").innerHTML = 
       "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";      
   } else {
