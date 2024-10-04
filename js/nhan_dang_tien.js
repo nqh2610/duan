@@ -1,19 +1,19 @@
 // const URL = "https://teachablemachine.withgoogle.com/models/_VoeOrhBw/";
-const URL ="https://teachablemachine.withgoogle.com/models/gdwBzqWuO/"
+const URL = "https://teachablemachine.withgoogle.com/models/gdwBzqWuO/"
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
 
-// Automatically call init when the page loads
+// Tự động gọi hàm init khi trang được tải
 window.onload = init;
 
 async function init() {
   const modelURL = URL + "model.json";
   const metadataURL = URL + "metadata.json";
 
-  // load the model and metadata
+  // Tải mô hình và metadata
   model = await tmImage.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
 
-  // Setup webcam
+  // Thiết lập webcam
   const video = document.createElement("video");
   video.setAttribute("playsinline", "true");
   video.setAttribute("autoplay", "true");
@@ -23,10 +23,15 @@ async function init() {
   video.setAttribute("hidden", "true");
   document.body.appendChild(video);
 
-  // Access the webcam
+  // Kiểm tra thiết bị có phải là di động hay không
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  
+  // Truy cập webcam (sử dụng camera sau nếu là thiết bị di động)
   navigator.mediaDevices
     .getUserMedia({
-      video: true,
+      video: {
+        facingMode: isMobile ? { exact: "environment" } : "user" // Camera sau trên thiết bị di động, camera trước trên máy tính
+      }
     })
     .then((stream) => {
       video.srcObject = stream;
@@ -34,12 +39,15 @@ async function init() {
       video.onloadedmetadata = () => {
         window.requestAnimationFrame(loop);
       };
+    })
+    .catch(function (err) {
+      console.log("Lỗi xảy ra: " + err);
     });
 
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
 
-  // Prediction and webcam drawing loop
+  // Vòng lặp dự đoán và vẽ webcam
   async function loop() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     await predict();
@@ -51,12 +59,12 @@ async function init() {
 
   // Hàm đọc kết quả dự đoán
   const handlePrediction = () => {
-    if (highestPrediction && highestProbability >= 0.5 && highestPrediction!=="0") {
-      const text = highestPrediction
-      speakText(text)
-    } else {      
-      const text = "Chưa nhận ra số tiền";        
-      speakText(text)
+    if (highestPrediction && highestProbability >= 0.8 && highestPrediction !== "0") {
+      const text = highestPrediction;
+      speakText(text);
+    } else {
+      const text = "Chưa nhận ra số tiền";
+      speakText(text);
     }
   };
 
@@ -84,12 +92,12 @@ async function predict() {
     }
   }
 
-  
-  if (highestProbability >= 0.5 && highestPrediction!=="0") {
-    document.getElementById("label-container").innerHTML = 
-      "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";      
+  // Hiển thị kết quả dự đoán nếu xác suất đủ cao
+  if (highestProbability >= 0.8 && highestPrediction !== "0") {
+    document.getElementById("label-container").innerHTML =
+      "Kết quả: " + highestPrediction + " (" + (highestProbability * 100).toFixed(2) + "%)";
   } else {
-    document.getElementById("label-container").innerHTML = 
+    document.getElementById("label-container").innerHTML =
       "Chưa nhận diện số tiền";
   }
 }
