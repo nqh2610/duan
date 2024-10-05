@@ -64,7 +64,7 @@ async function predict() {
   let detectedObjects = [];
 
   for (let i = 0; i < maxPredictions; i++) {
-    if (prediction[i].probability >= 0.8) {
+    if (prediction[i].probability >= 0.8 && prediction[i].className !== "0") {
       detectedObjects.push({
         name: prediction[i].className,
         probability: prediction[i].probability,
@@ -77,7 +77,7 @@ async function predict() {
     let resultText = "";
     let detectedSpeechText = "Cẩn thận, phát hiện có ";
 
-    detectedObjects.forEach((obj, index) => {
+    detectedObjects.forEach((obj, index) => {    
       resultText += obj.name + " (" + (obj.probability * 100).toFixed(2) + "%)<br>";
 
       // Thêm từng đối tượng vào văn bản nói
@@ -85,7 +85,7 @@ async function predict() {
         detectedSpeechText += obj.name + "."; // Thêm dấu chấm sau đối tượng cuối cùng
       } else {
         detectedSpeechText += obj.name + ", "; // Thêm dấu phẩy giữa các đối tượng
-      }
+      }    
     });
 
     document.getElementById("label-container").innerHTML = resultText;
