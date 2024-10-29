@@ -65,9 +65,9 @@ function trangchu() {
   speakText("Đã mở trang chủ");
 }
 
-function nhan_dang_cu_chi() {
-  window.location.href = "nhan_dang_cu_chi.html";
-  speakText("Đã mở nhận dạng cử chỉ bàn tay");
+function timdovat() {
+  window.location.href = "tim_do_vat.html";
+  speakText("Đã mở tìm đồ vật");
 }
 
 function docchu() {
@@ -103,6 +103,10 @@ document.getElementById("nhan_dien_chu_viet").addEventListener("click", () => {
 
 document.getElementById("mo_ta_khung_canh").addEventListener("click", () => {
   motakhungcanh();
+});
+
+document.getElementById("tim_do_vat").addEventListener("click", () => {
+  timdovat();
 });
 
 document.getElementById("nhan_dien_tien").addEventListener("click", () => {

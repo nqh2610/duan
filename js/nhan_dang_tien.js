@@ -1,5 +1,6 @@
 // const URL = "https://teachablemachine.withgoogle.com/models/_VoeOrhBw/";
-const URL = "https://teachablemachine.withgoogle.com/models/gdwBzqWuO/"
+// const URL = "https://teachablemachine.withgoogle.com/models/gdwBzqWuO/"
+const URL ="https://teachablemachine.withgoogle.com/models/RYanIitQe0/"
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
 
 // Tự động gọi hàm init khi trang được tải
