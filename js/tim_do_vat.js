@@ -64,7 +64,7 @@ async function predict() {
   let detectedObjects = [];
 
   for (let i = 0; i < maxPredictions; i++) {
-    if (prediction[i].probability >= 0.8) {
+    if (prediction[i].probability >= 0.8 && prediction[i].className !== "0") {
       detectedObjects.push({
         name: prediction[i].className,
         probability: prediction[i].probability,
