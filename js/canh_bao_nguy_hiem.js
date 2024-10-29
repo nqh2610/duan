@@ -98,6 +98,6 @@ async function predict() {
     }
   } else {
     // Xóa nội dung label container nếu không phát hiện đối tượng với độ chính xác cao
-    document.getElementById("label-container").innerHTML = "Không phát hiện có nguy hiểm";
+    document.getElementById("label-container").innerHTML = "Không phát hiện nguy hiểm";
   }
 }
