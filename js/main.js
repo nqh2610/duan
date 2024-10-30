@@ -32,8 +32,8 @@ if ("webkitSpeechRecognition" in window) {
     if (command.includes("mở trang chủ")) {
       trangchu();
     }    
-    else if (command.includes("nhận dạng cử chỉ tay")) {
-      nhan_dang_cu_chi();
+    else if (command.includes("mở tìm đồ vật")) {
+      timdovat();
     } else if (command.includes("mở mô tả khung cảnh")) {
       motakhungcanh();
     } else if (command.includes("mở nhận diện tiền")) {
