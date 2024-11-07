@@ -1,4 +1,4 @@
-const URL = "https://teachablemachine.withgoogle.com/models/0fC1vRKVC/";
+const URL = "https://teachablemachine.withgoogle.com/models/hwIo4Gb2p/";
 
 let model, webcam, labelContainer, maxPredictions, highestPrediction, highestProbability;
 let lastSpokenTime = 0; // Theo dõi thời gian của cảnh báo được nói lần cuối
